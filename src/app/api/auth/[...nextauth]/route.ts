@@ -80,10 +80,10 @@ const handler = NextAuth({
       }
       return true;
     },
-    async session({ session, token }) {
+    async session({ session }) {
       return session;
     },
-    async jwt({ token, account }) {
+    async jwt({ token }) {
       return token;
     },
   },

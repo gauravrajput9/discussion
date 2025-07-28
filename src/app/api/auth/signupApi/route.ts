@@ -28,8 +28,9 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ message: "Signup successful", user });
-  } catch (error: any) {
-    console.error("Signup Error Details:", error); // Add this line
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    console.error("Signup Error Details:", error);
+    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
