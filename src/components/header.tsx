@@ -26,7 +26,7 @@ const HeaderPage = () => {
           <div className="flex-1 mx-6 flex justify-center">
             <input
               type="text"
-              placeholder="Enter a post to search..."
+              placeholder="Enter a topic to search..."
               className="w-full max-w-md px-4 py-2 text-base rounded-lg text-gray-800 border border-gray-300 bg-white placeholder-gray-500 
                          focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition duration-200"
             />

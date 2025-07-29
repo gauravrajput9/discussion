@@ -26,16 +26,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Providers>
-          <HeaderPage />
-          {children}
-          <Footer/>
-        </Providers>
-      </body>
-    </html>
-  );
+  <html lang="en">
+    <body
+      className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-r from-purple-500 to-indigo-600 text-white min-h-screen flex flex-col`}
+    >
+      <Providers>
+        <HeaderPage />
+        <main className="flex-grow">{children}</main>
+        <Footer />
+      </Providers>
+    </body>
+  </html>
+);
+
 }

@@ -56,6 +56,7 @@ const TopicCreateForm = () => {
       alert("Unexpected server response");
       return;
     }
+    console.log(data);
 
     if (!res.ok) {
       if (data.field === "overall" && data.slug) {

@@ -5,11 +5,11 @@ import Image from "next/image";
 
 const AuthPrompt = () => {
   return (
-    <div className="bg-white py-12 px-6 md:px-12 text-center">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">
+    <div className="bg-purple-700 mt-8 py-12 px-6 md:px-12 text-center">
+      <h2 className="text-2xl font-bold text-gray-900 mb-4">
         Already have an account?
       </h2>
-      <p className="text-gray-600 mb-6">
+      <p className="text-gray-900 mb-6">
         Sign in to continue your discussions or create a new account if you’re
         new here.
       </p>
@@ -32,9 +32,9 @@ const AuthPrompt = () => {
 
       {/* OR Divider */}
       <div className="flex items-center justify-center gap-2 mb-6">
-        <span className="h-px w-16 bg-gray-300"></span>
-        <span className="text-gray-500 text-sm">OR</span>
-        <span className="h-px w-16 bg-gray-300"></span>
+        <span className="h-px w-16 bg-gray-500"></span>
+        <span className="text-gray-900 text-sm font-semibold">OR</span>
+        <span className="h-px w-16 bg-gray-500"></span>
       </div>
 
       {/* Social Logins */}
