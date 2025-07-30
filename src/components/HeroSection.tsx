@@ -25,7 +25,8 @@ const HeroSection = () => {
         transition={{ delay: 0.3, duration: 0.8 }}
         className="text-lg md:text-xl max-w-2xl mb-8"
       >
-        Join the community and share your thoughts — collaborate, learn, and grow together.
+        Join the community and share your thoughts — collaborate, learn, and
+        grow together.
       </motion.p>
 
       {/* Key Points */}
@@ -64,6 +65,10 @@ const HeroSection = () => {
           className="px-6 py-3 rounded-lg bg-white text-purple-700 font-semibold text-lg hover:bg-gray-200 transition"
         >
           Get Started By Creating A New Account..
+        </Link>
+
+        <Link href={session ? "/topics" : "/login"} className=" ml-3.5 px-6 py-3 rounded-lg bg-white text-purple-700 font-semibold text-lg hover:bg-gray-200 transition">
+          View All Topics
         </Link>
       </motion.div>
     </section>

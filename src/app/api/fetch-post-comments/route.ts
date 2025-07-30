@@ -1,3 +1,4 @@
+'use server'
 import prisma from "@/lib";
 import { NextResponse } from "next/server";
 
@@ -11,6 +12,22 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+      include: {
+        topic: true
+      }
+    });
+
+    if (!post) {
+      return NextResponse.json(
+        { errors: "Cannot find the topic to redirect" },
+        { status: 404 }
+      );
+    }
+
+    const slug = post.topic.slug;
 
     const comments = await prisma.comment.findMany({
       where: { postId },
@@ -27,9 +44,17 @@ export async function POST(req: Request) {
       orderBy: { createdAt: "desc" },
     });
 
+    // **Convert dates to strings**
+    const serializedComments = comments.map((comment) => ({
+      ...comment,
+      createdAt: comment.createdAt.toISOString(),
+      updatedAt: comment.updatedAt.toISOString(),
+    }));
+
     return NextResponse.json({
       success: true,
-      comments,
+      slug,
+      comments: serializedComments,
     });
   } catch (error) {
     console.error("Error fetching comments:", error);

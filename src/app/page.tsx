@@ -6,17 +6,16 @@ import DisplayPostsList from "@/components/post-list";
 import TopicCreateForm from "@/components/TopicCreateFrom";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { PostType } from "@/types/post";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<PostType[]>([]);
 
   const fetchTopPosts = async () => {
     try {
-      const res = await fetch("/api/auth/get-posts-without-slug");
-      if (!res.ok) {
-        throw new Error("Unable to fetch posts");
-      }
+      const res = await fetch("/api/get-posts-without-slug");
+      if (!res.ok) throw new Error("Unable to fetch posts");
       const data = await res.json();
       setPosts(data.topPosts);
     } catch (error) {
@@ -51,9 +50,10 @@ export default function Navbar() {
 
       {/* Top Posts Section */}
       <div className="mt-20">
-        <h2 className="text-3xl font-bold text-gray-900 mb-10">Top Discussions</h2>
-
-        <DisplayPostsList posts={posts}  />
+        <h2 className="text-3xl font-bold text-gray-900 mb-10">
+          Top Discussions
+        </h2>
+        <DisplayPostsList posts={posts} />
       </div>
     </div>
   );

@@ -48,7 +48,7 @@ const PostCreateForm: React.FC<PostCreateFormProps> = ({
 
     setLoading(true);
     try {
-      const res = await fetch("/api/auth/new-post", {
+      const res = await fetch("/api/new-post", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, description, slug }),

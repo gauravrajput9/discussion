@@ -1,39 +1,32 @@
 "use client";
-
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 type AddCommentPropType = {
   slug: string;
   postId: string;
 };
 
-const AddCommentForm: React.FC<AddCommentPropType> = ({ slug, postId }) => {
-//   console.log(slug, postId);
-  const [comment, setComment] = React.useState<string>("");
-//   const [createComment, setCreateComment] = useState("")
+export default function AddCommentForm({ slug, postId }: AddCommentPropType) {
+  const [comment, setComment] = useState("");
+  const router = useRouter();
 
   const handleCommentCreation = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const res = await fetch("/api/auth/save-comment", {
-        method: "POST",
-        body: JSON.stringify({ comment, slug, postId }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!res.ok) {
-        throw new Error("Cannot create post");
-      }
-      const data = await res.json();
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
+
+    await fetch("/api/save-comment", {
+      method: "POST",
+      body: JSON.stringify({ comment, slug, postId }),
+      headers: { "Content-Type": "application/json" },
+    });
+
     setComment("");
+
+    // Refresh the page to fetch latest server-side comments
+    router.refresh();
   };
 
   return (
@@ -60,6 +53,4 @@ const AddCommentForm: React.FC<AddCommentPropType> = ({ slug, postId }) => {
       </form>
     </motion.div>
   );
-};
-
-export default AddCommentForm;
+}

@@ -41,7 +41,7 @@ const TopicCreateForm = () => {
   const handleCreateTopic = async () => {
     if (!validateFields()) return;
 
-    const res = await fetch("/api/auth/new-topic", {
+    const res = await fetch("/api/new-topic", {
       method: "POST",
       body: JSON.stringify({ title, description }),
       headers: {

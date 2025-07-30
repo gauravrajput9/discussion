@@ -3,7 +3,6 @@ import prisma from "@/lib";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 

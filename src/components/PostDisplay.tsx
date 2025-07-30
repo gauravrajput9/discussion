@@ -1,7 +1,11 @@
 import prisma from "@/lib";
 import { notFound } from "next/navigation";
 import React from "react";
-import { PostDisplayProps } from "@/app/topics/[slug]/posts/[postId]/page";
+
+type PostDisplayProps = {
+  postId: string;
+  slug: string;
+};
 
 const PostDisplayPageThroughReceived: React.FC<PostDisplayProps> = async ({
   postId,
@@ -15,10 +19,10 @@ const PostDisplayPageThroughReceived: React.FC<PostDisplayProps> = async ({
   return (
     <>
       <h1 className="text-3xl font-bold font-serif text-white mb-6">
-       POST: {post.title}
+        POST: {post.title}
       </h1>
       <p className="text-xl font-serif text-white/90 leading-relaxed">
-        DESCRIPTION:  <span className="ml-3" >{post.content}</span>
+        DESCRIPTION: <span className="ml-3">{post.content}</span>
       </p>
     </>
   );

@@ -1,7 +1,6 @@
 "use client";
-
-import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 type CommentType = {
   id: string;
@@ -13,38 +12,13 @@ type CommentType = {
   userId: string;
   user: {
     id: string;
-    name: string;
+    name: string | null; // allow null
     email: string;
     image: string | null;
   };
 };
 
-const CommentsDisplayParticularPosts = ({ postId }: { postId: string }) => {
-  const [comments, setComments] = useState<CommentType[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchComments = async () => {
-    try {
-      const res = await fetch("/api/auth/fetch-post-comments", {
-        method: "POST",
-        body: JSON.stringify({ postId }),
-        headers: { "Content-Type": "application/json" },
-      });
-      if (!res.ok) throw new Error("Cannot fetch comments");
-      const data = await res.json();
-      setComments(data.comments);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (postId) fetchComments();
-  }, [postId]);
-
-  // Format date to something like "July 29, 2025"
+export default function CommentsDisplayParticularPosts({ comments }: { comments: CommentType[] }) {
   const formatDate = (dateString: string) =>
     new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -63,17 +37,7 @@ const CommentsDisplayParticularPosts = ({ postId }: { postId: string }) => {
     >
       <h2 className="text-2xl font-semibold text-white mb-4">Comments</h2>
 
-      {/* Loading State */}
-      {loading ? (
-        <div className="space-y-3">
-          {[1, 2, 3].map((s) => (
-            <div
-              key={s}
-              className="animate-pulse bg-white/10 h-16 rounded-xl"
-            ></div>
-          ))}
-        </div>
-      ) : comments.length > 0 ? (
+      {comments.length > 0 ? (
         comments.map((c) => (
           <motion.div
             key={c.id}
@@ -83,23 +47,24 @@ const CommentsDisplayParticularPosts = ({ postId }: { postId: string }) => {
             className="bg-white/10 backdrop-blur-md rounded-xl p-4 shadow flex gap-4 items-start"
           >
             {/* Avatar */}
-            <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold">
+            <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold overflow-hidden">
               {c.user.image ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                   src={c.user.image}
-                  alt={c.user.name}
-                  className="w-full h-full rounded-full object-cover"
+                  alt={c.user.name ?? "Anonymous"}  // FIX: fallback value
+                  width={40}
+                  height={40}
+                  className="rounded-full object-cover"
                 />
               ) : (
-                c.user.name.charAt(0).toUpperCase()
+                (c.user.name?.charAt(0).toUpperCase() ?? "A") // FIX: fallback letter
               )}
             </div>
 
             {/* Content */}
             <div className="flex-1">
               <div className="flex items-center justify-between">
-                <span className="text-white font-medium">{c.user.name}</span>
+                <span className="text-white font-medium">{c.user.name ?? "Anonymous"}</span>
                 <span className="text-xs text-gray-400">
                   {formatDate(c.createdAt)}
                 </span>
@@ -116,6 +81,4 @@ const CommentsDisplayParticularPosts = ({ postId }: { postId: string }) => {
       )}
     </motion.div>
   );
-};
-
-export default CommentsDisplayParticularPosts;
+}
