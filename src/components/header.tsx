@@ -1,14 +1,31 @@
 "use client";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Separator } from "./ui/separator";
 import SearchPosts from "./SearchPostsHomePage";
+import { useRouter } from "next/navigation";
 
 const HeaderPage = () => {
   const { data: session } = useSession();
+  const router = useRouter()
+  const [user, setUser] = React.useState<{ id: string; name: string; image: string } | null>(null);
+
+  const fetchUser = async () => {
+    const res = await fetch("/api/get-user");
+    if (!res.ok) throw new Error("Failed to fetch user");
+    const data = await res.json();  
+    console.log("Fetched user:", data);
+    setUser(data);
+  };
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      fetchUser().catch((error) => console.error("Error fetching user:", error));
+    }
+  }, [session?.user?.email]);
 
   return (
     <nav className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-md fixed top-0 left-0 w-full z-50">
@@ -49,7 +66,7 @@ const HeaderPage = () => {
                 <Popover>
                   <PopoverTrigger>
                     <Image
-                      src={session.user?.image ?? "/profile.png"}
+                      src={user?.image || session.user?.image || "/profile.png"}
                       alt="User image"
                       width={40}
                       height={40}
@@ -68,7 +85,7 @@ const HeaderPage = () => {
                     <Separator className="my-2 h-[2px] bg-gray-300" />
 
                     {/* Edit Profile Button */}
-                    <button className="w-full bg-purple-600 text-white py-2 rounded-md font-semibold hover:bg-purple-700 transition">
+                    <button onClick={() => router.push("/edit-profile")} className="w-full bg-purple-600 text-white py-2 rounded-md font-semibold hover:bg-purple-700 transition">
                       Edit Profile
                     </button>
                   </PopoverContent>
